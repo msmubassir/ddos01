@@ -1,4 +1,4 @@
 Flask==2.0.3
-rddos_tool==1.2
+rddos-tool==1.2
 pyfiglet==0.8.post1
 gunicorn==21.2.0
