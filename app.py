@@ -2,10 +2,12 @@ from flask import Flask, render_template, request
 
 app = Flask(__name__)
 
+# Home page
 @app.route('/', methods=['GET', 'POST'])
 def home():
-    result = None
+    result = None  # Initialize result to avoid UnboundLocalError
     if request.method == 'POST':
+        # Handle user input
         option = request.form.get('option')
         if option == '1':
             domain = request.form.get('domain')
@@ -25,7 +27,7 @@ def home():
             Author of the program is not responsible for its usage.
             """
         elif option == '4':
-            result = "Exiting..."
+            return "Exiting..."
     return render_template('index.html', result=result)
 
 if __name__ == '__main__':
