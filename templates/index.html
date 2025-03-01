@@ -1,36 +1,79 @@
-from flask import Flask, render_template, request
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CLI Website</title>
+    <style>
+        body {
+            background-color: black;
+            color: white;
+            font-family: monospace;
+            padding: 20px;
+        }
+        pre {
+            color: lime;
+        }
+        input, button {
+            font-family: monospace;
+            background-color: #333;
+            color: white;
+            border: 1px solid lime;
+            padding: 5px;
+        }
+        .result {
+            color: cyan;
+        }
+    </style>
+</head>
+<body>
+    <pre>
+   _____          ______    ______         __      ______)        Version: 1.2
+  (, /   )      /) (, /    ) (, /    )   (__/  )   (, /        /)
+    /__ /  _  _(/    /    /    /    / ___  /        /  ______//
+ ) /   \__(/_(_(_  _/___ /_  _/___ /_(_)) /      ) /  (_)(_)(/_
+(_/              (_/___ /  (_/___ /    (_/       (_/
+    </pre>
+    <p>                        Author: Mr.<span style="color: red;">Red</span></p>
+    <p>       Github: <a href="https://github.com/Red-company/RDDoS_Tool" style="color: lime;">https://github.com/Red-company/RDDoS_Tool</a></p>
+    <p>                   For legal purposes only</p>
+    <p style="color: lime; font-weight: bold;">
+        1. Website Domain<br>
+        2. IP Address<br>
+        3. About<br>
+        4. Exit
+    </p>
 
-app = Flask(__name__)
+    <form method="POST">
+        <input type="text" name="option" placeholder="Enter option (1-4)" required>
+        <br><br>
+        <div id="input-fields">
+            <!-- Dynamic input fields based on option -->
+        </div>
+        <button type="submit">Submit</button>
+    </form>
 
-# Home page
-@app.route('/', methods=['GET', 'POST'])
-def home():
-    if request.method == 'POST':
-        # Handle user input
-        option = request.form.get('option')
-        if option == '1':
-            domain = request.form.get('domain')
-            try:
-                import socket
-                ip = socket.gethostbyname(domain)
-                result = f"Resolved IP for {domain}: {ip}"
-            except Exception as e:
-                result = f"Error: {e}"
-            return render_template('index.html', result=result)
-        elif option == '2':
-            ip = request.form.get('ip')
-            result = f"You entered IP: {ip}"
-            return render_template('index.html', result=result)
-        elif option == '3':
-            about_text = """
-            RedDDoS Tool is an open source tool for penetration.
-            You can test networks/servers/any other devices with it.
-            Author of the program is not responsible for its usage.
-            """
-            return render_template('index.html', result=about_text)
-        elif option == '4':
-            return "Exiting..."
-    return render_template('index.html', result=None)
+    {% if result %}
+    <div class="result">
+        <pre>{{ result }}</pre>
+    </div>
+    {% endif %}
 
-if __name__ == '__main__':
-    app.run(debug=True)
+    <script>
+        // JavaScript to dynamically show input fields based on user selection
+        const optionInput = document.querySelector('input[name="option"]');
+        const inputFields = document.getElementById('input-fields');
+
+        optionInput.addEventListener('input', (e) => {
+            const option = e.target.value;
+            let html = '';
+            if (option === '1') {
+                html = '<input type="text" name="domain" placeholder="Enter domain" required>';
+            } else if (option === '2') {
+                html = '<input type="text" name="ip" placeholder="Enter IP address" required>';
+            }
+            inputFields.innerHTML = html;
+        });
+    </script>
+</body>
+</html>
